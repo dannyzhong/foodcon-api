@@ -27,7 +27,7 @@ CREATE TABLE `food` (
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`food_id`),
   UNIQUE KEY `food_id_UNIQUE` (`food_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,62 @@ CREATE TABLE `food` (
 
 LOCK TABLES `food` WRITE;
 /*!40000 ALTER TABLE `food` DISABLE KEYS */;
+INSERT INTO `food` VALUES (1,'apple pie'),(2,'beef pie');
 /*!40000 ALTER TABLE `food` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `food_ingredient`
+--
+
+DROP TABLE IF EXISTS `food_ingredient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `food_ingredient` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `_food_id` int(11) DEFAULT NULL,
+  `_ingredient_id` int(11) DEFAULT NULL,
+  `weight` decimal(10,0) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `food_id_idx` (`_food_id`),
+  KEY `_ingredient_id_idx` (`_ingredient_id`),
+  CONSTRAINT `_food_id` FOREIGN KEY (`_food_id`) REFERENCES `food` (`food_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `_ingredient_id` FOREIGN KEY (`_ingredient_id`) REFERENCES `ingredient` (`ingredient_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `food_ingredient`
+--
+
+LOCK TABLES `food_ingredient` WRITE;
+/*!40000 ALTER TABLE `food_ingredient` DISABLE KEYS */;
+/*!40000 ALTER TABLE `food_ingredient` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ingredient`
+--
+
+DROP TABLE IF EXISTS `ingredient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ingredient` (
+  `ingredient_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`ingredient_id`),
+  UNIQUE KEY `ingredient_id_UNIQUE` (`ingredient_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ingredient`
+--
+
+LOCK TABLES `ingredient` WRITE;
+/*!40000 ALTER TABLE `ingredient` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ingredient` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -96,14 +151,12 @@ DROP TABLE IF EXISTS `vendor_food`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vendor_food` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `food_id` int(11) DEFAULT '0',
-  `vendor_id` int(11) DEFAULT NULL,
+  `_food_id` int(11) DEFAULT '0',
+  `_vendor_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `vendor_id_idx` (`vendor_id`),
-  KEY `food_id` (`food_id`),
-  CONSTRAINT `food_id` FOREIGN KEY (`food_id`) REFERENCES `food` (`food_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `vendor_id` FOREIGN KEY (`vendor_id`) REFERENCES `vendor` (`vendor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `vendor_id_idx` (`_vendor_id`),
+  KEY `food_id` (`_food_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -125,4 +178,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-10-30 13:45:08
+-- Dump completed on 2015-10-31  0:04:07
